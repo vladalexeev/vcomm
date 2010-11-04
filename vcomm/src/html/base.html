@@ -30,14 +30,8 @@
 <td class="heading-login" valign="top">
   	<div class="login">
     	<b>{{ user_info.user_name }}</b>
-		{% if user_info.admin %}
-  			(admin)
-		{% endif %} 
-
-		{% if user_info.banned %}
-  			(banned)
-		{% endif %}      
-      
+    	
+{% for group in user_info.groups %}{% if forloop.first %}({% endif %}{{ group }}{% if forloop.last %}){% else %},{% endif %}{% endfor %}
 		<a href="{{ user_info.login_url }}">{{ user_info.login_url_text }}</a>
 	</div>
 

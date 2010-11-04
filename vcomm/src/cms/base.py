@@ -50,11 +50,13 @@ class UserInfo:
             self.banned = const.sys_group_banned in self.groups
             self.admin = const.sys_group_admin in self.groups
             self.moderator = const.sys_group_moderator in self.groups
+            self.author = const.sys_group_author in self.groups
             
             if self.banned:
                 self.admin = False
                 self.author = False
                 self.moderator = False
+                self.groups = [const.sys_group_banned]
                 
             if self.admin:
                 self.author = True
@@ -65,6 +67,7 @@ class UserInfo:
                 self.admin = True
                 self.author = True
                 self.moderator = True
+                self.groups.append('superadmin')
             
         else:
             self.login_url=users.create_login_url(request_uri)
