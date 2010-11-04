@@ -10,6 +10,8 @@ from db.dbmodel import VUserGroup
 from db.dbmodel import VUser
 from db.dbmodel import VTag
 
+from google.appengine.ext import db
+
 logger = misc.LoggerWrapper()
 
 class AdminPage_AdminHome(AdminRequestHandler):
@@ -83,7 +85,11 @@ class AdminPage_UserProfile(AdminRequestHandler):
     """Страница профиля пользователя"""
     def get(self):
         super(AdminPage_UserProfile,self).get()
-        user = VUser.get(self.request.get('key'))
+        if self.request.get('key'):
+            user = VUser.get(self.request.get('key'))
+        else:
+            key = db.Key.from_path('VUser',int(self.request.get('id')))
+            user = VUser.get(key)
         groups = VUserGroup.all()
         template_values = {
                            'user': user,

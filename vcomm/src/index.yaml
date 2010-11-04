@@ -12,6 +12,12 @@ indexes:
 
 - kind: VPage
   properties:
+  - name: author
+  - name: date
+    direction: desc
+
+- kind: VPage
+  properties:
   - name: tag
   - name: date
     direction: desc

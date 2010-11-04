@@ -8,13 +8,18 @@ Users
 
 <table class="table-common" cellspacing="1" cellpadding="0" align="center">
 <tr>
+  <th>id</th>
   <th>E-mail</th>
   <th>Nickname</th>
   <th>User groups</th>
+  
 </tr>
 
 {% for user in users %}
 <tr>
+  <td>
+    {{user.key.id}}
+  </td>
   <td><a href="/admin/user/profile?key={{ user.key }}">{{ user.user.email }}</a></td>
   <td>{% if user.nickname %}{{ user.nickname }}{% endif%}</td>
   <td>

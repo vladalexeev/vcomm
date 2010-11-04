@@ -26,7 +26,8 @@ application = webapp.WSGIApplication([
                                       ('/pages', pages.Page_PageList),
                                       (r'/tag/(.*)/(.*)/(.*)', pages.Page_PageListByTag),
                                       (r'/tag/(.*)/(.*)', pages.Page_PageListByTag),
-                                      (r'/tag/(.*)', pages.Page_PageListByTag),                                      
+                                      (r'/tag/(.*)', pages.Page_PageListByTag),
+                                      (r'/pages/author/(.*)', pages.Page_PageListByAuthor),
                                       
                                       ('/admin', admin.AdminPage_AdminHome),
                                       ('/admin/usergroups', admin.AdminPage_UserGroupList),

@@ -8,6 +8,9 @@ from base import BasicRequestHandler
 from base import BasicRequestHandlerException
 from db.dbmodel import VPage
 from db.dbmodel import VPageComment
+from db.dbmodel import VUser
+
+from google.appengine.ext import db
 
 logger = misc.LoggerWrapper()
 
@@ -37,7 +40,6 @@ class Page_PageListByTag(BasicRequestHandler):
       в обратном хронологическом порядке
     """
     def get(self, *args):
-        logger.info("args "+str(args))
         start_index = 0
         if (self.request.get("start")):
             start_index=int(self.request.get("start"))
@@ -52,6 +54,29 @@ class Page_PageListByTag(BasicRequestHandler):
                                    (lambda query: tagFilterList(query,tag_names)))
         template_values['tag_name'] = tag_names        
         self.write_template('html/page-list-tag.html', template_values)
+        
+class Page_PageListByAuthor(BasicRequestHandler):
+    def get(self, *args):
+        logger.info("Auhtor args "+str(args))
+        start_index = 0
+        if (self.request.get("start")):
+            start_index=int(self.request.get("start"))
+            
+        author_id = args[0]
+        url_template = '/pages/author/'+author_id
+        
+        logger.info('author_id='+str(author_id))
+        
+        vuser_key = db.Key.from_path('VUser',int(author_id))
+        vuser = VUser.get(vuser_key)
+        
+        if vuser:        
+            template_values = getPages(start_index, page_size, self.user_info, url_template,
+                                       (lambda query: query.filter('author =',vuser.user)))
+            template_values['author'] = vuser       
+            self.write_template('html/page-list-author.html', template_values)
+        else:
+            raise BasicRequestHandlerException(404,'User not found id='+author_id)        
         
 def tagFilterList(query, tag_names):
     """Создание фильтра для запроса для выборки страниц по нескольким тегам"""
