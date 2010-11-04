@@ -1,0 +1,93 @@
+{% extends "core-base.html" %}
+
+{% block header %}
+User groups
+{% endblock %}
+
+{% block content %}  
+
+<table class="table-common" cellspacing="1" cellpadding="0" align="center">
+<tr>
+  <th>Name</th>
+  <th>Title</th>
+  <th>Actions</th>
+</tr>
+
+{% for tag in tags %}
+<tr>
+  <td>{{ tag.name }}</td>
+  <td>{{ tag.title }}</td>
+  <td><a href="/admin/tag/delete?key={{ tag.key }}">Delete</a></td>
+</tr>
+{% endfor %}
+</table>
+
+<div style="height:10px"></div>
+<button id="add_tag" onclick="showAddTagDialog()">Add tag</button>
+
+<form name="tagAddForm" method="post" action="/admin/tag/add" >
+<input type="hidden" name="tag_name" />
+<input type="hidden" name="tag_title" />
+</form>
+
+<div class="dialog-header" id="dlgAddTagHeader"><div class="dialog-header-content">Create new tag</div></div>
+<div class="dialog-frame" id="dlgAddTagFrame">
+  <div class="dialog-frame-content">
+    <table width="100%" border="0" cellspacing="5">
+      <tr>
+        <td>Name</td>
+        <td><input id="input_tag_name" name="input_tag_name" type="text" style="width:100%" value=""/></td>
+      </tr>
+
+      <tr>
+        <td>Title</td>
+        <td><input id="input_tag_title" name="input_tag_title" type="text" style="width:100%" value=""/></td>
+      </tr>
+    </table>
+    <div style="text-align:right">
+      <input type="button" name="btnAddOK" value="OK" onclick="onBtnAddOKClick()"/>
+      <input type="button" name="btnAddCancel" value="Cancel" onclick="onBtnAddCancelClick()" />
+    </div>
+  </div>
+</div>
+
+
+<script language="JavaScript">
+var dlgAdd=new JSDialog(document.getElementById("dlgAddTagHeader"), 
+		document.getElementById("dlgAddTagFrame"),400,200);
+
+function onBtnAddCancelClick() {
+  dlgAdd.hide();
+}
+
+function onBtnAddOKClick() {
+	var tagName=document.getElementById("input_tag_name").value;
+	var tagTitle=document.getElementById("input_tag_title").value;
+	
+	if (!tagName) {
+		alert('Tag name should not be empty');
+		return;
+	}
+	
+	if (!checkUrlComartibleString(tagName)) {
+		alert("Only such sympbols allowed for name (a-z, A-Z, -, .)");
+		return;
+	}
+	
+	if (!tagTitle) {
+		alert("Tag title should not be empty");
+		return;
+	}
+	
+	document.tagAddForm.tag_name.value=tagName;
+	document.tagAddForm.tag_title.value=tagTitle;
+	document.tagAddForm.submit();
+}
+
+function showAddTagDialog() {
+	dlgAdd.show();
+}
+
+</script>     
+
+{% endblock content %}

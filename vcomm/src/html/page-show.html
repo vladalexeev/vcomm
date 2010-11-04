@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block header %}
+{{ page.title }}
+{% endblock %}
+
+{% block author_menu %}
+{{ block.super }}
+<div class="user-menu-command"><a href="/author/page/edit?key={{ page.key }}">Edit page</a></div>
+{% endblock %}
+
+{% block content %}  
+
+
+<div class="post-details">
+  {{ page.date|date:"d.m.Y H:i" }} 
+  {{ page.author.nickname }}
+</div>
+
+<div class="post-content">
+{{ page.content|removestr:"<pagecut>" }}
+</div>
+<div style="clear:both"></div>
+
+<!-- page tags -->
+
+<div class="post-details">
+{% for tag in page.tags %}
+  <a href="/tag/{{ tag }}">{{ tag|tag_title }}</a>{% if not forloop.last %},{% endif %}
+{% endfor %}
+</div>
+
+<div class="delimiter"></div>
+<!-- page comments -->
+
+{% for comment in comments%}
+<div class="comment-details">
+  {{ comment.date|date:"d.m.Y H:i" }} 
+  <b>{{ comment.author.nickname }}</b>
+</div>
+      
+{% if user_info.admin %}
+  <div class="comment-actions">
+  <a href="/moderator/comment/delete?key={{ comment.key }}&return=page">delete</a>
+  <a href="/moderator/comment/edit?key={{ comment.key }}&return=page">edit</a>
+  <a href="#" onclick="ajaxSendRequest('/admin/user/ban?{{ comment.comment_key_param }}')">ban user</a>
+  </div>
+{% endif %}
+
+<div class="comment-content">{{ comment.content|escape|linebreaks }}</div>
+{% endfor %}
+
+{% if user_info.user %}
+<div class="delimiter"></div>
+<p>Your comment</p>
+<form action="/comment/add?key={{ page.key }}" method="post" name="commentForm" onsubmit="return checkForm()">
+  <div><textarea name="content" rows="3" cols="60"></textarea></div>
+  <div><input type="submit" value="Post a comment"></div>
+</form>
+  
+  <script language="JavaScript">
+  function checkForm() {
+    commentContent=document.commentForm.content.value;
+    if (!commentContent || commentContent.trim().length==0) {
+      alert("Please, enter comment content");
+      return false;
+    }
+    
+    return true;
+  }
+  </script>
+{% else %}
+<p>To post comments you should <a href="{{ user_info.login_url }}">login to your Google account</a></p>
+{% endif %}
+
+{% endblock %}

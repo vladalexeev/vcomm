@@ -1,0 +1,61 @@
+{% extends "core-base.html" %}
+
+{% block header %}
+User groups
+{% endblock %}
+
+{% block content %}  
+
+<table class="table-common" cellspacing="1" cellpadding="0" align="center">
+<tr>
+  <th>Group name</th>
+  <th>Actions</th>
+</tr>
+
+{% for userGroup in userGroups %}
+<tr>
+  <td>{{ userGroup.name }}</td>
+  <td><a href="/admin/usergroup/delete?key={{ userGroup.key }}">Delete</a></td>
+</tr>
+{% endfor %}
+</table>
+
+<button id="add_group" onclick="showAddUserGroupDialog()">Add group</button>
+
+<form name="groupAddForm" method="post" action="/admin/usergroup/add" >
+<input type="hidden" name="group_name" />
+</form>
+
+<div class="dialog-header" id="dlgAddUserGroupHeader"><div class="dialog-header-content">Create new user group</div></div>
+<div class="dialog-frame" id="dlgAddUserGroupFrame">
+  <div class="dialog-frame-content">
+    <div>Enter user group name</div>
+    <div><input id="input_group_name" name="input_group_name" type="text" style="width:100%" value=""/></div>
+    <div style="text-align:right">
+      <input type="button" name="btnAddOK" value="OK" onclick="onBtnAddOKClick()"/>
+      <input type="button" name="btnAddCancel" value="Cancel" onclick="onBtnAddCancelClick()" />
+    </div>
+  </div>
+</div>
+
+
+<script language="JavaScript">
+var dlgAdd=new JSDialog(document.getElementById("dlgAddUserGroupHeader"), 
+		document.getElementById("dlgAddUserGroupFrame"),400,200);
+
+function onBtnAddCancelClick() {
+  dlgAdd.hide();
+}
+
+function onBtnAddOKClick() {
+	document.groupAddForm.group_name.value=document.getElementById("input_group_name").value;
+	document.groupAddForm.submit();
+}
+
+function showAddUserGroupDialog() {
+	dlgAdd.show();
+}
+
+</script>     
+
+{% endblock content %}

@@ -1,0 +1,36 @@
+{% for page in pages %}
+<div class="blogpost">
+<div class="post-title"><a href="/page/{{ page.name }}">
+{% if user_info.admin and not page.visible %}
+  [*** Hidden]
+{% endif %}
+{{ page.title|striptags }}
+</a></div>
+<div class="post-details">
+  {{ page.date|date:"d.m.Y H:i" }} 
+  {{ page.author.nickname }}
+</div>
+
+<div class="post-content">
+{{ page.content|cutstr:"<pagecut>" }}
+</div>
+
+<div class="post-details">
+  {% for tag in page.tags %}
+    <a href="/tag/{{ tag }}">{{ tag|tag_title }}</a>{% if not forloop.last %},{% endif %}
+  {% endfor %}
+</div>
+
+<div style="clear:both"></div>
+</div>
+
+<div style="height:20"></div>
+{% endfor %}
+
+{% if pages_prev_page_url %}
+<a href="{{ pages_prev_page_url }}"><img src="/template/prev-page.gif" border="0"></a>
+{% endif %}
+
+{% if pages_next_page_url %}
+<a href="{{ pages_next_page_url }}"><img src="/template/next-page.gif" border="0"></a>
+{% endif %}

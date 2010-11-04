@@ -1,0 +1,48 @@
+{% extends "core-base.html" %}
+
+{% block header %}
+User profile {{ user.user.email }}
+{% endblock %}
+
+{% block content %}
+
+<form name="formUser" method="post" action="/admin/user/save?key={{ user.key }}">
+<table border="0">
+<tr>
+  <td>Nickname</td>
+  <td><input name="nickname" value="{% if user.nickname%}{{ user.nickname }}{% else %}{{ user.user.nickname}}{% endif %}" type="text"/></td>
+</tr>
+
+<tr>
+  <td valign="top">User groups</td>
+  <td>
+    <table border="0">
+    {% for group in groups %}
+      <tr>
+        <td>
+          <input type="checkbox" name="group_{{ group.name }}" id="group_{{ group.name }}"
+            {% if userGroups|contains:group.name %}checked="1"{% endif %}
+          />
+          <label for="group_{{ group.name }}">{{ group.name }}</label>
+        </td>
+      </tr>
+    {% endfor %}
+    </table>
+  </td>
+</tr>
+</table>
+
+<input type="button" name="save_button" value="Save" onclick="document.formUser.submit()"/>
+<input type="button" name="delete_button" value="Delete" onclick="onDeleteButtonClick()"/>
+
+</form>
+
+<script language="JavaScript">
+function onDeleteButtonClick() {
+  if (confirm("Do you want to delete user '{{ user.user.email }}'")) {
+    document.location='/admin/user/delete?key={{ user.key }}';
+  }
+}
+</script>
+ 
+{% endblock %}

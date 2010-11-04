@@ -1,0 +1,13 @@
+#Wed Nov 03 19:40:53 MSK 2010
+eclipse.preferences.version=1
+encoding//src/cms/admin.py=utf-8
+encoding//src/cms/author.py=utf-8
+encoding//src/cms/base.py=utf-8
+encoding//src/cms/filters.py=utf-8
+encoding//src/cms/misc.py=utf-8
+encoding//src/cms/moderator.py=utf-8
+encoding//src/cms/pages.py=utf-8
+encoding//src/const/__init__.py=utf-8
+encoding//src/customfilters.py=utf-8
+encoding//src/db/dbmodel.py=utf-8
+encoding//src/main.py=utf-8

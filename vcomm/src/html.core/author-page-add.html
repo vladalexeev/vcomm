@@ -1,0 +1,73 @@
+{% extends "core-base.html" %}
+
+{% block header %}
+Page editing
+{% endblock %}
+
+{% block content %}
+
+
+<form action="/author/page/sign?key={{ page.key }}" method="post" onsubmit="return checkForm()" name="postForm">
+  <div>Title <input type="text" name="page_title" size="60" value="{{ page.title }}"></div>
+  <div>Name <input type="text" name="page_name" size="60" value="{{ page.name }}"></div>
+  <div>
+    <input type="checkbox" name="page_visible" id="page_visible"
+      {% if page %}
+        {% if page.visible %}
+          checked="1"
+        {% endif %}
+      {% else %}
+        checked="1"
+      {% endif%}
+    /> 
+    <label for="page_visible">Visible</label>
+  </div>
+  <div>
+    <input type="button" name="btn_add_pagecut" id="btn_add_pagecut" value="Add &lt;pagecut&gt;"
+     onclick="onBtnAddPageCutClick()" />
+  </div>
+  <div><textarea name="page_content" rows="10" cols="80">{{ page.content }}</textarea></div>
+  
+  <div>
+  {% for tag in tags %}
+    <nobr>
+    <input name="tag_{{ tag.name }}" id="tag_{{ tag.name }}" type="checkbox"
+    {% if page.tags and page.tags|contains:tag.name %}checked="1"{% endif %}
+    />
+    <label for="tag_{{ tag.name }}">{{ tag.title }}</label>
+    </nobr>
+  {% endfor %}
+  </div>
+    
+  <div><input type="submit" value="Send post"></div>
+</form> 
+
+<script language="JavaScript">
+function onBtnAddPageCutClick() {
+	document.postForm.page_content.value+="<pagecut>";
+}
+
+function checkForm() {
+	if (!document.postForm.page_title.value) {
+		alert('Page title should not be empty');
+		return false;
+	}
+	
+	var pageName=document.postForm.page_name.value;
+	
+	if (!pageName) {
+		alert("Page name should not be empty");
+		return false;
+	}
+	
+	if (!checkUrlComartibleString(pageName)) {
+		alert("Only such sympbols allowed for name (a-z, A-Z, -, .)");
+		return false;
+	}
+	
+	return true;
+}
+
+</script> 
+      
+{% endblock content %}

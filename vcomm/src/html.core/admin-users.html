@@ -1,0 +1,69 @@
+{% extends "core-base.html" %}
+
+{% block header %}
+Users
+{% endblock %}
+
+{% block content %}  
+
+<table class="table-common" cellspacing="1" cellpadding="0" align="center">
+<tr>
+  <th>E-mail</th>
+  <th>Nickname</th>
+  <th>User groups</th>
+</tr>
+
+{% for user in users %}
+<tr>
+  <td><a href="/admin/user/profile?key={{ user.key }}">{{ user.user.email }}</a></td>
+  <td>{% if user.nickname %}{{ user.nickname }}{% endif%}</td>
+  <td>
+    {% for group in user.groups %}
+      {{ group }}{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  </td>
+</tr>
+{% endfor %}
+</table>
+
+
+
+<button id="add_user" onclick="showAddUserDialog()">Add user</button>
+
+<form name="userAddForm" method="post" action="/admin/user/add" >
+<input type="hidden" name="user_email" />
+</form>
+
+<div class="dialog-header" id="dlgAddUserHeader"><div class="dialog-header-content">Add new user</div></div>
+<div class="dialog-frame" id="dlgAddUserFrame">
+  <div class="dialog-frame-content">
+    <div>Enter user E-mail</div>
+    <div><input id="input_user_email" name="input_user_email" type="text" style="width:100%" value=""/></div>
+    <div style="text-align:right">
+      <input type="button" name="btnAddOK" value="OK" onclick="onBtnAddOKClick()"/>
+      <input type="button" name="btnAddCancel" value="Cancel" onclick="onBtnAddCancelClick()" />
+    </div>
+  </div>
+</div>
+
+
+<script language="JavaScript">
+var dlgAdd=new JSDialog(document.getElementById("dlgAddUserHeader"), 
+		document.getElementById("dlgAddUserFrame"),400,200);
+
+function onBtnAddCancelClick() {
+  dlgAdd.hide();
+}
+
+function onBtnAddOKClick() {
+	document.userAddForm.user_email.value=document.getElementById("input_user_email").value;
+	document.userAddForm.submit();
+}
+
+function showAddUserDialog() {
+	dlgAdd.show();
+}
+
+</script>     
+
+{% endblock content %}

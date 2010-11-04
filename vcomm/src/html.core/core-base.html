@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>{% block title %}Administration{% endblock %}</title>
+<link href="/template/core.css" rel="stylesheet" type="text/css">
+{% block include_css %}{% endblock %}
+</head> 
+
+
+<body>
+
+<script src="/template/main.js" type="text/javascript"></script>
+{% block include_js %}{% endblock %}
+
+ 
+{% block page_top %}
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0" class="page-head">
+<tr>
+<td class="heading-left" rowspan="2">
+<a href="/"><img src="/template/vcms-logo.png" border="0" style="margin-left:20px"/></a>
+</td>
+
+<!-- User login area -->
+<td class="heading-login" valign="top">
+  	<div class="login">
+    	<b>{{ user_info.user_name }}</b>
+		{% if user_info.admin %}
+  			(admin)
+		{% endif %} 
+
+		{% if user_info.banned %}
+  			(banned)
+		{% endif %}      
+      
+		<a href="{{ user_info.login_url }}">{{ user_info.login_url_text }}</a>
+	</div>
+
+</td>
+</tr>
+<tr>
+<td align="center" valign="middle">
+</td>
+</tr>
+</table>
+
+{% endblock %}
+
+<div class="page-center">
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+<tr>
+  <td valign="top">
+    <div class="header">
+      {% block header %}{% endblock %}
+    </div>    
+    <div class="content">
+      {% block content %}{% endblock %}
+    </div>  
+  </td>
+  
+  <td valign="top" class="user-menu-cell">
+    <div class="user-menu">     
+     {% if user_info.admin %}
+       <div class="user-menu-panel">
+         <div class="user-menu-command"><a href="/admin">Administration</a></div>
+         <div class="delimiter"></div>       
+         {% block admin_menu %}
+         <div class="user-menu-command"><a href="/admin/usergroups">User groups</a></div>
+         <div class="user-menu-command"><a href="/admin/users">User list</a></div>
+         <div class="user-menu-command"><a href="/admin/tags">Tag list</a></div>
+         {% endblock %}
+         <div class="delimiter"></div>
+         <div class="user-menu-command"><a href="/">Home page</a></div>
+       </div>
+     {% endif%}
+   </div>  
+  </td>
+</tr>
+</table>
+
+</div>
+
+{% block page_bottom %}
+<div class="footer">
+&copy; Idea and design by Vlad Alexeev, 2009 | <a href="/privacy">Privacy policy</a>
+</div>
+
+{% endblock %}
+</body>
+</html>
