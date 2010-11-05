@@ -45,8 +45,8 @@
       
 {% if user_info.admin %}
   <div class="comment-actions">
-  <a href="/moderator/comment/delete?key={{ comment.key }}&return=page">delete</a>
-  <a href="/moderator/comment/edit?key={{ comment.key }}&return=page">edit</a>
+  <a href="/moderator/comment/delete?key={{ comment.key }}&return=/page/{{ page.name }}">delete</a>
+  <a href="/moderator/comment/edit?key={{ comment.key }}&return=/page/{{ page.name }}">edit</a>
   <a href="#" onclick="ajaxSendRequest('/moderator/user/ban?key={{ comment.key }}',true)">ban user</a>
   </div>
 {% endif %}

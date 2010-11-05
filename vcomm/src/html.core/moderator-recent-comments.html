@@ -1,0 +1,39 @@
+{% extends "core-base.html" %}
+
+{% block header %}
+Recent comments
+{% endblock %}
+
+{% block content %}
+
+{% for comment in comments%}
+
+<div class="comment-details">
+  <a href="/page/{{ comment.page_ref.name }}">{{ comment.page_ref.title }}</a> - 
+  {{ comment.date|date:"d.m.Y H:i" }} 
+  <b>{{ comment.author.nickname }}</b>
+</div>
+      
+{% if user_info.admin %}
+  <div class="comment-actions">
+  <a href="/moderator/comment/delete?key={{ comment.key }}&return=/moderator/comments">delete</a>
+  <a href="/moderator/comment/edit?key={{ comment.key }}&return=/moderator/comments">edit</a>
+  <a href="#" onclick="ajaxSendRequest('/moderator/user/ban?key={{ comment.key }}',true)">ban user</a>
+  </div>
+{% endif %}
+
+<div class="comment-content">{{ comment.content|escape|linebreaks }}</div>
+<div style="height:10"></div>
+{% endfor %}
+
+<div>
+{% if pages_prev_page_url %}
+<a href="{{ pages_prev_page_url }}"><img src="/template/prev-page.gif" border="0"></a>
+{% endif %}
+
+{% if pages_next_page_url %}
+<a href="{{ pages_next_page_url }}"><img src="/template/next-page.gif" border="0"></a>
+{% endif %}
+</div>
+
+{% endblock content %}

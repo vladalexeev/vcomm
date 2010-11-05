@@ -11,10 +11,9 @@ class ModeratorAction_CommentDelete(ModeratorRequestHandler):
         super(ModeratorAction_CommentDelete,self).get()
         comment_key = self.request.get('key')
         comment = VPageComment.get(comment_key)
-        page = comment.page_ref
         VPageComment.delete(comment)
-        if self.request.get('return') == 'page':
-            self.redirect('/page/'+page.name)
+        if self.request.get('return'):
+            self.redirect(self.request.get('return'))
 
 class ModeratorPage_CommentEdit(ModeratorRequestHandler):
     def get(self):
@@ -36,9 +35,8 @@ class ModeratorAction_CommentChange(ModeratorRequestHandler):
         comment = VPageComment.get(comment_key)
         comment.content = self.request.get('content')
         comment.put()
-        page = comment.page_ref
-        if return_target == 'page':
-            self.redirect('/page/'+page.name)
+        if return_target:
+            self.redirect(return_target)
             
 class ModeratorAction_CommentUserBan(ModeratorRequestHandler):
     def get(self):
@@ -57,3 +55,33 @@ class ModeratorAction_CommentUserBan(ModeratorRequestHandler):
             vuser.put()
             
         self.response.out.write('alert("User banned")')
+        
+class ModeratorPage_RecentComments(ModeratorRequestHandler):
+    def get(self):
+        start_index=0;
+        if self.request.get('start'):
+            start_index = int(self.request.get('start'))
+            
+        page_size = 10
+        comments = VPageComment.all().order('-date').fetch(page_size+1, start_index)
+        
+        prev_page_url = None
+        next_page_url = None
+        
+        if start_index>0:
+            if start_index-page_size>0:
+                prev_page_url = '/moderator/comments?start='+str(start_index-page_size)
+            else:
+                prev_page_url = '/moderator/comments'
+                
+        if len(comments)>page_size:
+            next_page_url = '/moderator/comments?start='+str(start_index+page_size)
+            comments = comments[:-1]
+            
+        template_values = {
+                           'comments': comments,
+                           'prev_page_url': prev_page_url,
+                           'next_page_url': next_page_url
+                           }
+            
+        self.write_template('html.core/moderator-recent-comments.html', template_values)

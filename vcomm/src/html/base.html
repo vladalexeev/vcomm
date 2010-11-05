@@ -83,6 +83,14 @@
          {% endblock %}
        </div>
      {% endif %}
+
+     {% if user_info.moderator %}
+       <div class="user-menu-panel">
+         {% block moderator_menu %}
+         <div class="user-menu-command"><a href="/moderator/comments">Recent comments</a></div>
+         {% endblock %}
+       </div>
+     {% endif%}
      
      {% if user_info.admin %}
        <div class="user-menu-panel">

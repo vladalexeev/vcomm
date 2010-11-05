@@ -1,5 +1,9 @@
 {% extends "core-base.html" %}
 
+{% block header %}
+Edit comment
+{% endblock %}
+
 {% block content %}
 <form action="/moderator/comment/change?key={{ comment.key }}&return={{ return_target}}" method="post">
   <div><textarea name="content" rows="3" cols="60">{{ comment.content }}</textarea></div>
