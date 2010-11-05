@@ -7,6 +7,8 @@ from base import BasicRequestHandlerException
 
 from db.dbmodel import VPage
 from db.dbmodel import VTag
+import logging
+import re
 
 class PageAuthor_EditPage(AuthorRequestHandler):
     def get(self):
@@ -29,9 +31,13 @@ class PageAuthor_EditPage(AuthorRequestHandler):
 class ActionAuthor_SignPage(AuthorRequestHandler):
     def post(self):
         super(ActionAuthor_SignPage,self).post()
-        pageKey = self.request.get('key')
-        if pageKey:
-            page = VPage.get(pageKey)
+        page_key = self.request.get('key')
+        page_name = self.request.get('page_name')
+        if not check_page_name(page_key, page_name):
+            raise BasicRequestHandlerException(500,'Invalid page name "'+page_name+'"')
+        
+        if page_key:
+            page = VPage.get(page_key)
             if page.author <> self.user_info.user and not self.user_info.admin:
                 raise BasicRequestHandlerException(403,'Cannot edit page. Not author or admin')
         else:
@@ -39,7 +45,7 @@ class ActionAuthor_SignPage(AuthorRequestHandler):
             page.tags = []
             
         page.title = self.request.get('page_title')
-        page.name = self.request.get('page_name')
+        page.name = page_name
         if self.request.get('page_visible'):
             page.visible = True
         else:
@@ -64,14 +70,19 @@ class AuthorAjax_CheckPageName(AuthorRequestHandler):
         page_key = self.request.get('key')
         page_name = self.request.get('name')
         
-        if is_page_name_exist(page_key, page_name):
+        if check_page_name(page_key, page_name):
             self.response.out.write('setPageNameCorrect(false)')
         else:
             self.response.out.write('setPageNameCorrect(true)')
         
-def is_page_name_exist(page_key, page_name):
+def check_page_name(page_key, page_name):
     """Функция проверяет существует ли еще хотя бы одна страница
     с заданным именем за исключением страницы с ключом page_key"""
+    r = r'[^a-zA-z0-9-.]'
+    if re.match(r, page_name):
+        logging.info('page name is incorrent "'+page_name+'"')
+        return False
+    
     query = VPage.all().filter('name =', page_name)
     if page_key:
         query = query.filter('__key__ !=',db.Key(page_key))
