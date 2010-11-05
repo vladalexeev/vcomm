@@ -155,6 +155,9 @@ class Page_ShowPage(BasicRequestHandler):
         
 class Action_CommentAdd(LoggedInRequestHandler):
     def post(self):
+        if self.user_info.banned:
+            raise BasicRequestHandlerException(403,'User banned')
+        
         page_key = self.request.get('key')
         page = VPage.get(page_key)
         

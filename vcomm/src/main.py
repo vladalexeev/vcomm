@@ -50,7 +50,8 @@ application = webapp.WSGIApplication([
                                       
                                       ('/moderator/comment/delete', moderator.ModeratorAction_CommentDelete),
                                       ('/moderator/comment/edit', moderator.ModeratorPage_CommentEdit),
-                                      ('/moderator/comment/change', moderator.ModeratorAction_CommentChange)
+                                      ('/moderator/comment/change', moderator.ModeratorAction_CommentChange),
+                                      ('/moderator/user/ban', moderator.ModeratorAction_CommentUserBan)
                                      ], debug=True)
 
 webapp.template.register_template_library('customfilters')
