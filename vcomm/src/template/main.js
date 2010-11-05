@@ -16,9 +16,9 @@ try {
 if (!request)
   alert("Error initializing XMLHttpRequest!");
   
-function ajaxSendRequest(url) {
+function ajaxSendRequest(url, async) {
 	if (request.readyState==0 || request.readyState==4) {
-		request.open("GET", url, true);
+		request.open("GET", url, async);
 		request.onreadystatechange = ajaxUpdatePage;
 		request.send(null);
 	}	

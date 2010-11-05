@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from google.appengine.ext import db
+
 from base import AuthorRequestHandler
 from base import BasicRequestHandlerException
 
@@ -55,3 +57,26 @@ class ActionAuthor_SignPage(AuthorRequestHandler):
         page.put()
             
         self.redirect('/author/page/edit?key='+str(page.key()))
+        
+class AuthorAjax_CheckPageName(AuthorRequestHandler):
+    """Проверка аяксом уникальности имени страницы"""
+    def get(self):
+        page_key = self.request.get('key')
+        page_name = self.request.get('name')
+        
+        if is_page_name_exist(page_key, page_name):
+            self.response.out.write('setPageNameCorrect(false)')
+        else:
+            self.response.out.write('setPageNameCorrect(true)')
+        
+def is_page_name_exist(page_key, page_name):
+    """Функция проверяет существует ли еще хотя бы одна страница
+    с заданным именем за исключением страницы с ключом page_key"""
+    query = VPage.all().filter('name =', page_name)
+    if page_key:
+        query = query.filter('__key__ !=',db.Key(page_key))
+        
+    if query.get():
+        return True
+    else:
+        return False

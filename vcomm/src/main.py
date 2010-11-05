@@ -44,6 +44,7 @@ application = webapp.WSGIApplication([
                                       
                                       ('/author/page/edit', author.PageAuthor_EditPage),
                                       ('/author/page/sign', author.ActionAuthor_SignPage),
+                                      ('/author/checkpagename', author.AuthorAjax_CheckPageName),
                                       
                                       ('/comment/add', pages.Action_CommentAdd),
                                       

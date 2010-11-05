@@ -9,7 +9,10 @@ Page editing
 
 <form action="/author/page/sign?key={{ page.key }}" method="post" onsubmit="return checkForm()" name="postForm">
   <div>Title <input type="text" name="page_title" size="60" value="{{ page.title }}"></div>
-  <div>Name <input type="text" name="page_name" size="60" value="{{ page.name }}"></div>
+  <div>
+    Name <input type="text" name="page_name" id="page_name" size="60" value="{{ page.name }}">
+    <input type="button" value="check" onclick="checkPageName()"/>
+  </div>
   <div>
     <input type="checkbox" name="page_visible" id="page_visible"
       {% if page %}
@@ -65,7 +68,26 @@ function checkForm() {
 		return false;
 	}
 	
+	checkPageName();
+	
+	if (!pageNameCorrect) {
+		alert('Page name is not unique');
+		return false;
+	}
+	
 	return true;
+}
+
+function checkPageName() {
+	url="/author/checkpagename?key={{ page.key }}&name=";
+	url+=document.getElementById("page_name").value;
+	ajaxSendRequest(url,false);
+}
+
+var pageNameCorrect=false;
+
+function setPageNameCorrect(flag) {
+	pageNameCorrect=flag;
 }
 
 </script> 
