@@ -21,6 +21,9 @@ class LoggerWrapper:
     def error(self, message):
         logging.error(self._prefix()+message)
         
+    def exception(self, exception):
+        logging.exception(exception)
+        
     
 def determineLanguage(str):
     """Определение языка сообщения: english и russian"""

@@ -92,7 +92,10 @@ class BasicRequestHandler(webapp.RequestHandler):
     def handle_exception(self, exception, debug_mode):
         if isinstance(exception, BasicRequestHandlerException):
             logger.error("Request handler exception code="+str(exception.code)+" - "+str(exception.message))
+            logger.exception(exception)
             self.error(exception.code)
+            self.response.out.write('<p>('+str(exception.code)+') '+exception.message+'</p>')
+            self.response.out.write('<p>Return to <a href="\\">home page</a></p>')    
         else:
             logger.error("Exception "+str(exception))
             super(BasicRequestHandler,self).handle_exception(exception,debug_mode)
