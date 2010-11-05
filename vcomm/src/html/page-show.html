@@ -14,7 +14,11 @@
 
 <div class="post-details">
   {{ page.date|date:"d.m.Y H:i" }} 
-  {{ page.author.nickname }}
+  {% if page.author|vuser_id %}
+  <a href="/pages/author/{{ page.author|vuser_id }}">{{ page.author|vuser_nickname }}</a>
+  {% else %}
+  {{ page.author }}
+  {% endif%}
 </div>
 
 <div class="post-content">

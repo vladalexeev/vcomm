@@ -52,7 +52,7 @@ class Page_PageListByTag(BasicRequestHandler):
         
         template_values = getPages(start_index, page_size, self.user_info, url_template,
                                    (lambda query: tagFilterList(query,tag_names)))
-        template_values['tag_name'] = tag_names        
+        template_values['tag_names'] = tag_names        
         self.write_template('html/page-list-tag.html', template_values)
         
 class Page_PageListByAuthor(BasicRequestHandler):

@@ -3,7 +3,10 @@
 
 
 {% block header %}
-Pages by tag {{ tag_name }}
+Pages by tag 
+{% for tag_name in tag_names %}
+  {{ tag_name|tag_title }}{% if not forloop.last %},{% endif %}
+{% endfor %}
 {% endblock %}
 
 {% block content %}  
