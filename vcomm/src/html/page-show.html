@@ -6,7 +6,9 @@
 
 {% block author_menu %}
 {{ block.super }}
+{% if page.author|equal:user_info.user %}
 <div class="user-menu-command"><a href="/author/page/edit?key={{ page.key }}">Edit page</a></div>
+{% endif %}
 {% endblock %}
 
 {% block content %}  

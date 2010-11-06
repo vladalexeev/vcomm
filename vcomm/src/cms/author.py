@@ -71,9 +71,9 @@ class AuthorAjax_CheckPageName(AuthorRequestHandler):
         page_name = self.request.get('name')
         
         if check_page_name(page_key, page_name):
-            self.response.out.write('setPageNameCorrect(false)')
-        else:
             self.response.out.write('setPageNameCorrect(true)')
+        else:
+            self.response.out.write('setPageNameCorrect(false)')
         
 def check_page_name(page_key, page_name):
     """Функция проверяет существует ли еще хотя бы одна страница
@@ -88,6 +88,6 @@ def check_page_name(page_key, page_name):
         query = query.filter('__key__ !=',db.Key(page_key))
         
     if query.get():
-        return True
-    else:
         return False
+    else:
+        return True
