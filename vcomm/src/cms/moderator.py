@@ -40,6 +40,7 @@ class ModeratorAction_CommentChange(ModeratorRequestHandler):
             
 class ModeratorAction_CommentUserBan(ModeratorRequestHandler):
     def get(self):
+        super(ModeratorAction_CommentUserBan,self).get()
         comment_key = self.request.get('key')
         comment = VPageComment.get(comment_key)
         
@@ -58,6 +59,7 @@ class ModeratorAction_CommentUserBan(ModeratorRequestHandler):
         
 class ModeratorPage_RecentComments(ModeratorRequestHandler):
     def get(self):
+        super(ModeratorPage_RecentComments,self).get()
         start_index=0;
         if self.request.get('start'):
             start_index = int(self.request.get('start'))
@@ -85,3 +87,22 @@ class ModeratorPage_RecentComments(ModeratorRequestHandler):
                            }
             
         self.write_template('html.core/moderator-recent-comments.html', template_values)
+
+class ModeratorPage_BannedUsers(ModeratorRequestHandler):
+    """Страница забанненых пользователей"""
+    def get(self):
+        super(ModeratorPage_BannedUsers,self).get()
+        users = VUser.all().filter('groups =', const.sys_group_banned)
+        template_values = {
+                           'users': users
+                           }
+        self.write_template('html.core/moderator-banned-users.html', template_values)
+        
+class ModeratorAction_UserUnban(ModeratorRequestHandler):
+    """Действие по разблокировке пользователя"""
+    def get(self):
+        super(ModeratorRequestHandler,self).get()
+        user = VUser.get(self.request.get('key'))
+        user.groups.remove(const.sys_group_banned)
+        user.put()
+        self.redirect('/moderator/bannedusers')

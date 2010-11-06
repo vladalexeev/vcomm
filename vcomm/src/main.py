@@ -52,6 +52,8 @@ application = webapp.WSGIApplication([
                                       ('/moderator/comment/edit', moderator.ModeratorPage_CommentEdit),
                                       ('/moderator/comment/change', moderator.ModeratorAction_CommentChange),
                                       ('/moderator/user/ban', moderator.ModeratorAction_CommentUserBan),
+                                      ('/moderator/user/unban', moderator.ModeratorAction_UserUnban),
+                                      ('/moderator/bannedusers', moderator.ModeratorPage_BannedUsers),
                                       ('/moderator/comments', moderator.ModeratorPage_RecentComments)
                                      ], debug=True)
 
