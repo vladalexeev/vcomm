@@ -60,17 +60,27 @@
   
   <td valign="top" class="user-menu-cell">
     <div class="user-menu">     
-     {% if user_info.admin %}
+     {% if user_info.admin or user_info.moderator %}
        <div class="user-menu-panel">
-         <div class="user-menu-command"><a href="/admin">Administration</a></div>
-         <div class="delimiter"></div>       
-         {% block admin_menu %}
-         <div class="user-menu-command"><a href="/admin/usergroups">User groups</a></div>
-         <div class="user-menu-command"><a href="/admin/users">User list</a></div>
-         <div class="user-menu-command"><a href="/admin/tags">Tag list</a></div>
-         {% endblock %}
-         <div class="delimiter"></div>
-         <div class="user-menu-command"><a href="/">Home page</a></div>
+         {% if user_info.admin %}
+           <div><a href="/admin">Administration</a></div>
+           <div class="delimiter"></div>       
+           {% block admin_menu %}
+           <div><a href="/admin/usergroups">User groups</a></div>
+           <div><a href="/admin/users">User list</a></div>
+           <div><a href="/admin/tags">Tag list</a></div>
+           {% endblock %}
+           <div class="delimiter"></div>
+         {% endif %}
+         
+         {% if user_info.moderator %}
+           {% block moderator_menu %}
+           <div><a href="/moderator/comments">Recent comments</a></div>
+           {% endblock %}
+           <div class="delimiter"></div>
+         {% endif %}
+         
+         <div><a href="/">Home page</a></div>
        </div>
      {% endif%}
    </div>  
