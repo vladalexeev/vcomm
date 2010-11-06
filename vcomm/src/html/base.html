@@ -1,85 +1,35 @@
-<html>
-<head>
-<title>{% block title %}Vlad CMS{% endblock %}</title>
+{% extends "template.html" %}
+
+
+{% block include_css %}
 <link href="/template/main.css" rel="stylesheet" type="text/css">
-{% block include_css %}{% endblock %}
-{% block rss %}
-<!-- 
-<link rel="alternate" type="application/rss+xml" title="Impossible World community posts" href="rss/posts" />
-<link rel="alternate" type="application/rss+xml" title="Impossible figures" href="rss/cube" />
- -->
-{% endblock %} 
-</head> 
+{% endblock %}
 
-
-<body>
-
+{% block include_js %}
 <script src="/template/main.js" type="text/javascript"></script>
-{% block include_js %}{% endblock %}
+{% endblock %}
 
  
-{% block page_top %}
-
-<table border="0" width="100%" cellspacing="0" cellpadding="0" class="page-top">
-<tr>
-<td class="heading-left" rowspan="2" height="133" width="325">
-<a href="/"><img src="/template/logo-blue.png" border="0" style="margin-left:20"/></a> 
-</td>
-
-<!-- User login area -->
-<td class="heading-login" valign="top">
-  	<div class="login">
-    	<b>{{ user_info.user_name }}</b>
+{% block user_login %}
+<b>{{ user_info.user_name }}</b>
     	
 {% for group in user_info.groups %}{% if forloop.first %}({% endif %}{{ group }}{% if forloop.last %}){% else %},{% endif %}{% endfor %}
 		<a href="{{ user_info.login_url }}">{{ user_info.login_url_text }}</a>
-	</div>
+{% endblock user_login %}
 
-</td>
-</tr>
-<tr>
-<td align="right" valign="middle" style="padding-right:20">
 
-<img src="/template/test-banner.gif" />
+{% block header %}{% endblock %}
 
-</td>
-</tr>
-</table>
+{% block content %}{% endblock %}
 
-{% endblock %}
 
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-<tr>
-  <td valign="top">
-    <div class="header">
-      {% block header %}{% endblock %}
-    </div>
-   
-    <div class="content">
-      {% block content %}{% endblock %}
-    </div>  
-  </td>
-  
-  <td valign="top" class="user-menu-cell">
-    <div class="user-menu">
-      {% if user_info %}
-        <div class="user-menu-panel">
-        {% block user_menu %}
+{% block side_menu %}
+{{ block.super }}
 
-        
-          <div class="user-menu-command"><a href="{{ user_info.url_my_cubic_figures }}"><b>My cubic figures</b></a></div>
-          <div class="user-menu-command"><a href="{{ user_info.url_create_cubic_figure }}">Create figure</a></div>
-          <div class="delimiter"></div>
-          <div class="user-menu-command"><a href="/cube/figures/all">All cubic figures</a></div>
-
-       {% endblock %}
-       </div>
-     {% endif %}
-     
      {% if user_info.author %}
        <div class="user-menu-panel">
          {% block author_menu %}
-         <div class="user-menu-command"><a href="/author/page/edit">Add new page</a></div>
+         <div><a href="/author/page/edit">Add new page</a></div>
          {% endblock %}
        </div>
      {% endif %}
@@ -87,7 +37,7 @@
      {% if user_info.moderator %}
        <div class="user-menu-panel">
          {% block moderator_menu %}
-         <div class="user-menu-command"><a href="/moderator/comments">Recent comments</a></div>
+         <div><a href="/moderator/comments">Recent comments</a></div>
          {% endblock %}
        </div>
      {% endif%}
@@ -95,35 +45,15 @@
      {% if user_info.admin %}
        <div class="user-menu-panel">
          {% block admin_menu %}
-         <div class="user-menu-command"><a href="/admin">Administration</a></div>
+         <div><a href="/admin">Administration</a></div>
          {% endblock %}
        </div>
      {% endif%}
-     
-     
-</div>  
-  </td>
-</tr>
-</table>
+
+{% endblock side_menu %}
+  
 
 
 {% block page_bottom %}
-<div class="footer">
-&copy; Idea and design by Vlad Alexeev, 2009 | <a href="/privacy">Privacy policy</a>
-
-{% if config.show_analytics %}
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-1090948-6");
-pageTracker._trackPageview();
-} catch(err) {}</script>
-{% endif %}
-</div>
-
+{{ block.super }}
 {% endblock %}
-</body>
-</html>
