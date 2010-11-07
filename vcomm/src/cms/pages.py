@@ -23,7 +23,7 @@ class Page_Index(BasicRequestHandler):
         
         template_values = getPages(start_index, page_size, self.user_info)
                 
-        self.write_template('html/index.html', template_values)
+        self.write_template('html.template/index.html', template_values)
         
 class Page_PageList(BasicRequestHandler):
     """Обработчик страницы анонсов в обратном хронологическом порядке"""
@@ -33,7 +33,7 @@ class Page_PageList(BasicRequestHandler):
             start_index=int(self.request.get("start"))
             
         template_values = getPages(start_index, page_size, self.user_info)
-        self.write_template('html/page-list.html', template_values)
+        self.write_template('html.template/page-list.html', template_values)
         
 class Page_PageListByTag(BasicRequestHandler):
     """Обработчик страницы анонсов страниц по конкретному тегу
@@ -53,7 +53,7 @@ class Page_PageListByTag(BasicRequestHandler):
         template_values = getPages(start_index, page_size, self.user_info, url_template,
                                    (lambda query: tagFilterList(query,tag_names)))
         template_values['tag_names'] = tag_names        
-        self.write_template('html/page-list-tag.html', template_values)
+        self.write_template('html.template/page-list-tag.html', template_values)
         
 class Page_PageListByAuthor(BasicRequestHandler):
     def get(self, *args):
@@ -74,7 +74,7 @@ class Page_PageListByAuthor(BasicRequestHandler):
             template_values = getPages(start_index, page_size, self.user_info, url_template,
                                        (lambda query: query.filter('author =',vuser.user)))
             template_values['author'] = vuser       
-            self.write_template('html/page-list-author.html', template_values)
+            self.write_template('html.template/page-list-author.html', template_values)
         else:
             raise BasicRequestHandlerException(404,'User not found id='+author_id)        
         
@@ -149,7 +149,7 @@ class Page_ShowPage(BasicRequestHandler):
                                'page': page,
                                'comments': comments
                                }
-            self.write_template('/html/page-show.html', template_values)
+            self.write_template('/html.template/page-show.html', template_values)
         else:
             raise BasicRequestHandlerException(404,'Page not found name='''+page_name+"'")
         
