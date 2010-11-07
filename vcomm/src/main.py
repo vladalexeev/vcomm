@@ -41,6 +41,7 @@ application = webapp.WSGIApplication([
                                       ('/admin/tags', admin.AdminPage_TagList),
                                       ('/admin/tag/add', admin.AdminAction_TagAdd),
                                       ('/admin/tag/delete', admin.AdminAction_TagDelete),
+                                      ('/admin/createsysgroups', admin.AdminAction_CreateSysGroups),
                                       
                                       ('/author/page/edit', author.PageAuthor_EditPage),
                                       ('/author/page/sign', author.ActionAuthor_SignPage),
@@ -66,4 +67,5 @@ def main():
 
 
 if __name__ == '__main__':
+    admin.create_sys_groups()
     main()

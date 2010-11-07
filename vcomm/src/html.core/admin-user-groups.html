@@ -6,6 +6,7 @@ User groups
 
 {% block content %}  
 
+
 <table class="table-common" cellspacing="1" cellpadding="0" align="center">
 <tr>
   <th>Group name</th>
@@ -15,12 +16,27 @@ User groups
 {% for userGroup in userGroups %}
 <tr>
   <td>{{ userGroup.name }}</td>
-  <td><a href="/admin/usergroup/delete?key={{ userGroup.key }}">Delete</a></td>
+  <td>
+  {% if not sys_groups|contains:userGroup.name %}
+  <a href="/admin/usergroup/delete?key={{ userGroup.key }}">Delete</a>
+  {% endif %}
+  </td>
 </tr>
 {% endfor %}
 </table>
 
+<div style="height:10px"></div>
+
 <button id="add_group" onclick="showAddUserGroupDialog()">Add group</button>
+
+<div style="height:10px"></div>
+
+<p>
+There are predefined user groups
+({% for group_name in sys_groups %}{{ group_name }}{% if not forloop.last %},{% endif %}{% endfor %}).
+If you don't see them in the list 
+<a href="/admin/createsysgroups">click here</a> to create them.
+</p>
 
 <form name="groupAddForm" method="post" action="/admin/usergroup/add" >
 <input type="hidden" name="group_name" />

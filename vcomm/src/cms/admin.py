@@ -3,6 +3,7 @@
 from google.appengine.api.users import User
 
 import misc
+import const
 
 from base import AdminRequestHandler
 
@@ -13,6 +14,19 @@ from db.dbmodel import VTag
 from google.appengine.ext import db
 
 logger = misc.LoggerWrapper()
+
+def create_user_group_if_not_exist(group_name):
+    """Создание группы пользователей, если она еще не существует"""
+    user_group = VUserGroup.all().filter('name =', group_name).get()
+    if not user_group:
+        user_group = VUserGroup()
+        user_group.name = group_name
+        user_group.put()
+        
+def create_sys_groups():
+    """Создание системных групп пользователей"""
+    for group_name in const.sys_groups:
+        create_user_group_if_not_exist(group_name)
 
 class AdminPage_AdminHome(AdminRequestHandler):
     """Домашняя страница администрирования"""
@@ -26,7 +40,8 @@ class AdminPage_UserGroupList(AdminRequestHandler):
         super(AdminPage_UserGroupList,self).get()
         userGroups = VUserGroup.all()
         template_values={
-                         'userGroups': userGroups
+                         'userGroups': userGroups,
+                         'sys_groups': const.sys_groups
                          }
         self.write_template('html.core/admin-user-groups.html', template_values)
         
@@ -45,7 +60,8 @@ class AdminAction_UserGroupDelete(AdminRequestHandler):
     def get(self):
         super(AdminAction_UserGroupDelete,self).get()
         g = VUserGroup.get(self.request.get('key'))
-        VUserGroup.delete(g)
+        if not g.name in const.sys_groups:
+            VUserGroup.delete(g)
         self.redirect('/admin/usergroups')
         
 class AdminPage_UserList(AdminRequestHandler):
@@ -117,6 +133,7 @@ class AdminAction_UserSave(AdminRequestHandler):
         self.redirect('/admin/user/profile?key='+str(user.key()))
         
 class AdminPage_TagList(AdminRequestHandler):
+    """Страница для отображения тегов"""
     def get(self):
         super(AdminPage_TagList,self).get()
         tags = VTag.all()
@@ -126,6 +143,7 @@ class AdminPage_TagList(AdminRequestHandler):
         self.write_template('html.core/admin-tags.html', template_values)
         
 class AdminAction_TagAdd(AdminRequestHandler):
+    """Действие добавления тега"""
     def post(self):
         super(AdminAction_TagAdd,self).post()
         tag = VTag()
@@ -135,9 +153,17 @@ class AdminAction_TagAdd(AdminRequestHandler):
         self.redirect('/admin/tags')
         
 class AdminAction_TagDelete(AdminRequestHandler):
+    """Действие удаления тега"""
     def get(self):
         super(AdminAction_TagDelete,self).get()
         tag_key = self.request.get('key')
         tag = VTag.get(tag_key)
         VTag.delete(tag)
         self.redirect('/admin/tags')
+        
+class AdminAction_CreateSysGroups(AdminRequestHandler):
+    """Действие по созданию системных групп"""
+    def get(self):
+        super(AdminAction_CreateSysGroups,self).get()
+        create_sys_groups()
+        self.redirect('/admin/usergroups')
