@@ -17,6 +17,8 @@ from cms import admin
 from cms import author
 from cms import moderator
 
+#import logging
+
 #from customfilters import *
 
 
@@ -67,5 +69,6 @@ def main():
 
 
 if __name__ == '__main__':
+#    logging.info(str(os.listdir('html')))
     admin.create_sys_groups()
     main()

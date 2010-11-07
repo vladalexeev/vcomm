@@ -46,6 +46,8 @@ class UserInfo:
             vuser = VUser.all().filter('user', self.user).get()
             if vuser:
                 self.groups = vuser.groups
+            else:
+                self.groups = []
                 
             self.banned = const.sys_group_banned in self.groups
             self.admin = const.sys_group_admin in self.groups

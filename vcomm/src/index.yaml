@@ -25,28 +25,7 @@ indexes:
 
 - kind: VPage
   properties:
-  - name: tag
-  - name: date
-    direction: desc
-
-- kind: VPage
-  properties:
   - name: tags
-  - name: date
-    direction: desc
-
-- kind: VPage
-  properties:
-  - name: tags
-  - name: tags
-  - name: date
-    direction: desc
-
-- kind: VPage
-  properties:
-  - name: tags
-  - name: tags
-  - name: visible
   - name: date
     direction: desc
 
