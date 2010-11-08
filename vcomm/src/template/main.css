@@ -142,14 +142,6 @@ body p {
 	font-size: 1;
 }
 
-.delimiter-full {
-  background-color: #AAC9F8;
-  height: 2px;
-  margin-top:10px;
-  margin-bottom:10px;
-  font-size: 1;
-}
-
 
 .footer {
 	font-size:10pt;
@@ -160,6 +152,11 @@ body p {
 	border-top: solid #AAC9F8 1px;
 }
 
+.tag-block {
+	background-image: url(/template/icon-tags.gif);
+	background-repeat: no-repeat;
+	padding-left:18px;
+}
 
 .blogpost {
 }

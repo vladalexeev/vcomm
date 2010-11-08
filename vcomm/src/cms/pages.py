@@ -149,7 +149,7 @@ class Page_ShowPage(BasicRequestHandler):
                                'page': page,
                                'comments': comments
                                }
-            self.write_template('/html.template/page-show.html', template_values)
+            self.write_template('html.template/page-show.html', template_values)
         else:
             raise BasicRequestHandlerException(404,'Page not found name='''+page_name+"'")
         

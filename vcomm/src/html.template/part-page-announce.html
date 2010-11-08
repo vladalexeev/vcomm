@@ -19,7 +19,7 @@
 {{ page.content|cutstr:"<pagecut>" }}
 </div>
 
-<div class="post-details">
+<div class="tag-block">
   {% for tag in page.tags %}
     <a href="/tag/{{ tag }}">{{ tag|tag_title }}</a>{% if not forloop.last %},{% endif %}
   {% endfor %}

@@ -26,31 +26,30 @@
 {% block side_menu %}
 {{ block.super }}
 
+  {% if user_info.author or user_info.admin or user_info.moderator %}
+    <div class="user-menu-panel">
      {% if user_info.author %}
-       <div class="user-menu-panel">
          {% block author_menu %}
          <div><a href="/author/page/edit">Add new page</a></div>
          {% endblock %}
-       </div>
      {% endif %}
 
      {% if user_info.moderator %}
-       <div class="user-menu-panel">
+       <div class="delimiter"></div>
          {% block moderator_menu %}
          <div><a href="/moderator/comments">Recent comments</a></div>
          <div><a href="/moderator/bannedusers">Banned users</a></div>
          {% endblock %}
-       </div>
      {% endif%}
      
      {% if user_info.admin %}
-       <div class="user-menu-panel">
+       <div class="delimiter"></div>
          {% block admin_menu %}
          <div><a href="/admin">Administration</a></div>
          {% endblock %}
-       </div>
      {% endif%}
-
+    </div>
+  {% endif %}
 {% endblock side_menu %}
   
 

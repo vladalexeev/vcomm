@@ -59,14 +59,7 @@
       {% if user_info %}
         <div class="user-menu-panel">
         {% block user_menu %}
-
-        
-          <div><a href="{{ user_info.url_my_cubic_figures }}"><b>My cubic figures</b></a></div>
-          <div><a href="{{ user_info.url_create_cubic_figure }}">Create figure</a></div>
-          <div class="delimiter"></div>
-          <div><a href="/cube/figures/all">All cubic figures</a></div>
-
-       {% endblock %}
+        {% endblock %}
        </div>
      {% endif %}
      {% endblock %}
