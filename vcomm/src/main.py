@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#import os
+import os
 #import cgi
 #import datetime
 #import time
@@ -20,6 +20,34 @@ from cms import moderator
 #import logging
 
 #from customfilters import *
+
+# ===================================================================
+# Костыль для Google
+# почему-то в библиотеке google.appengine.ext.webapp.template
+# переопределялась конфигурация Django, в частности параметр TEMPLATE_DIRS
+# из-за чего нельзя было задать последовательность каталогов поиска шаблонов
+# 
+# Теперь каталоги поиска шаблонов хранятся в переменной BASE_TEMPLATE_DIRS
+#
+# В случае, если вдруг Google поменяет библиотеку, то данный кусок кода
+# надо будет убрать. 
+import django.conf
+from google.appengine.ext.webapp import template
+
+BASE_TEMPLATE_DIRS = (os.path.abspath('html.override'),os.path.abspath('html.template'),os.path.abspath('html.core'))
+def _swap_settings_override(new):
+    settings = django.conf.settings
+    old = {}
+    for key, value in new.iteritems():
+        old[key] = getattr(settings, key, None)
+        if key == 'TEMPLATE_DIRS' and len(value) > 0:
+            value = BASE_TEMPLATE_DIRS + value
+        setattr(settings, key, value)
+    return old
+
+template._swap_settings = _swap_settings_override
+# Конец костыля для Google
+# ================================================================
 
 
 application = webapp.WSGIApplication([
