@@ -9,6 +9,7 @@ from base import BasicRequestHandlerException
 from db.dbmodel import VPage
 from db.dbmodel import VPageComment
 from db.dbmodel import VUser
+from db.dbmodel import VTag
 
 from google.appengine.ext import db
 
@@ -16,7 +17,13 @@ logger = misc.LoggerWrapper()
 
 page_size = 5
 
-class Page_Index(BasicRequestHandler):
+class Page_BasicRequestHandler(BasicRequestHandler):
+    def write_template(self, template_name, template_values):
+        tags = VTag.all().order('title')
+        template_values['tags'] = tags
+        super(Page_BasicRequestHandler, self).write_template(template_name,template_values)
+
+class Page_Index(Page_BasicRequestHandler):
     """Обработчик индексной страницы"""
     def get(self):
         start_index=0
@@ -25,7 +32,7 @@ class Page_Index(BasicRequestHandler):
                 
         self.write_template('html.template/index.html', template_values)
         
-class Page_PageList(BasicRequestHandler):
+class Page_PageList(Page_BasicRequestHandler):
     """Обработчик страницы анонсов в обратном хронологическом порядке"""
     def get(self):
         start_index = 0
@@ -35,7 +42,7 @@ class Page_PageList(BasicRequestHandler):
         template_values = getPages(start_index, page_size, self.user_info)
         self.write_template('html.template/page-list.html', template_values)
         
-class Page_PageListByTag(BasicRequestHandler):
+class Page_PageListByTag(Page_BasicRequestHandler):
     """Обработчик страницы анонсов страниц по конкретному тегу
       в обратном хронологическом порядке
     """
@@ -55,7 +62,7 @@ class Page_PageListByTag(BasicRequestHandler):
         template_values['tag_names'] = tag_names        
         self.write_template('html.template/page-list-tag.html', template_values)
         
-class Page_PageListByAuthor(BasicRequestHandler):
+class Page_PageListByAuthor(Page_BasicRequestHandler):
     def get(self, *args):
         logger.info("Auhtor args "+str(args))
         start_index = 0
@@ -138,7 +145,7 @@ def getPages(start_index, page_size, user_info,
     
     return template_values       
 
-class Page_ShowPage(BasicRequestHandler): 
+class Page_ShowPage(Page_BasicRequestHandler): 
     def get(self,*ar):
         page_name = ar[0]
         

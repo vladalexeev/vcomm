@@ -23,7 +23,7 @@
 {% block content %}{% endblock %}
 
 
-{% block side_menu %}
+{% block user_menu %}
 {{ block.super }}
 
   {% if user_info.author or user_info.admin or user_info.moderator %}
@@ -50,7 +50,15 @@
      {% endif%}
     </div>
   {% endif %}
-{% endblock side_menu %}
+{% endblock user_menu %}
+
+{% block side_menu %}
+  <div class="user-menu-panel">
+    {% for tag in tags %}
+      <div><a href="/tag/{{ tag.name }}">{{ tag.title }}</a></div>
+    {% endfor %}
+  </div>
+{% endblock side_menu%}
   
 
 

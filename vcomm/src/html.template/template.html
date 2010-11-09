@@ -56,13 +56,13 @@
   <td valign="top" class="user-menu-cell">
     <div class="user-menu">
       {% block side_menu %}
+      {% endblock %}    
+    
       {% if user_info %}
-        <div class="user-menu-panel">
         {% block user_menu %}
         {% endblock %}
-       </div>
-     {% endif %}
-     {% endblock %}
+      {% endif %}
+ 
      
 </div>  
   </td>
