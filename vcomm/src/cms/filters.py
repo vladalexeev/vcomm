@@ -63,6 +63,8 @@ page_cut_start = '<pagecut>'
 page_cut_end = '</pagecut>'
 
 def page_text_cut(page):
+    """Фильтр, отрезающий текст по тегу <pagecut> и формирующий 
+    гиперссылку для перехода на страницу с полным текстом"""
     text = page.content
     n = text.find(page_cut_start)
     n2 = text.find(page_cut_end)
@@ -79,6 +81,8 @@ def page_text_cut(page):
         return text
     
 def page_text_full(page):
+    """Фильтр, вырезающий из текста теги <pagecut> для формирования
+    текста для страницы с полным текстом статьи"""
     text = page.content
     n = text.find(page_cut_start)
     n2 = text.find(page_cut_end)
