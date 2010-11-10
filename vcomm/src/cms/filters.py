@@ -28,6 +28,7 @@ def tag_title(name):
 def vuser_id(user_prop):
     """Фильтр, получающий id пользователя по его UserProperty"""
     memcache_name = 'vuser_id_'+str(user_prop.email)
+
     memcache_value = mm_cache.get(memcache_name)
     
     if memcache_value is not None:
@@ -57,8 +58,43 @@ def vuser_nickname(user_prop):
             
         mm_cache.add(memcache_name, memcache_value,3600)
         return memcache_value
+    
+page_cut_start = '<pagecut>'
+page_cut_end = '</pagecut>'
+
+def page_text_cut(page):
+    text = page.content
+    n = text.find(page_cut_start)
+    n2 = text.find(page_cut_end)
+    
+    if n>=0:
+        if n2<n:
+            return text[:n-1]+'<a href="/page/'+page.name+'">...</a>'
+        else:
+            atext = text[n+len(page_cut_start):n2]
+            if not atext:
+                atext='...'
+            return text[:n-1]+'<a href="/page/'+page.name+'">'+atext+'</a>'
+    else:
+        return text
+    
+def page_text_full(page):
+    text = page.content
+    n = text.find(page_cut_start)
+    n2 = text.find(page_cut_end)
+    
+    if n>=0:
+        if n2<n:
+            return text[:n-1]+text[n+len(page_cut_start):]
+        else:
+            return text[:n-1]+text[n2+len(page_cut_end):]
+    else:
+        return text;
 
 register = template.create_template_register()
 register.filter(tag_title)
 register.filter(vuser_id)
 register.filter(vuser_nickname)
+
+register.filter(page_text_cut)
+register.filter(page_text_full)

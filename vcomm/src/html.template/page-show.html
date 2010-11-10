@@ -24,13 +24,13 @@
 </div>
 
 <div class="post-content">
-{{ page.content|removestr:"<pagecut>" }}
+{{ page|page_text_full }}
 </div>
 <div style="clear:both"></div>
 
 <!-- page tags -->
 
-<div class="post-details">
+<div class="tag-block">
 {% for tag in page.tags %}
   <a href="/tag/{{ tag }}">{{ tag|tag_title }}</a>{% if not forloop.last %},{% endif %}
 {% endfor %}

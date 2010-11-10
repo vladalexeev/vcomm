@@ -155,6 +155,7 @@ body p {
 .tag-block {
 	background-image: url(/template/icon-tags.gif);
 	background-repeat: no-repeat;
+	margin-top:10px;
 	padding-left:18px;
 }
 
