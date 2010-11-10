@@ -32,7 +32,10 @@ class AdminPage_AdminHome(AdminRequestHandler):
     """Домашняя страница администрирования"""
     def get(self):
         super(AdminPage_AdminHome,self).get()
-        self.write_template('html.core/admin-home.html', {})
+        template_values = {
+                           'version':const.version
+                           }
+        self.write_template('html.core/admin-home.html', template_values)
 
 class AdminPage_UserGroupList(AdminRequestHandler):
     """Обработчик страницы групп пользователей"""
