@@ -88,7 +88,7 @@ application = webapp.WSGIApplication([
                                       ('/moderator/comments', moderator.ModeratorPage_RecentComments)
                                      ], debug=True)
 
-webapp.template.register_template_library('customfilters')
+webapp.template.register_template_library('common.customfilters')
 webapp.template.register_template_library('cms.filters')
 
 

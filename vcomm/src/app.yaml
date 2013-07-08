@@ -1,7 +1,12 @@
 application: v-comm
-version: 0-05
-runtime: python
+version: 0-10
+runtime: python27
 api_version: 1
+threadsafe: yes
+
+libraries:
+- name: django
+  version: "1.5"
 
 handlers:
 - url: /favicon.ico
@@ -22,4 +27,4 @@ handlers:
   static_dir: js
 
 - url: .*
-  script: main.py
+  script: main.application
